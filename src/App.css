@@ -1,0 +1,13 @@
+.App {
+  text-align: center;
+  background-color: snow;
+}
+
+.checkbox {
+  text-decoration: line-through;
+}
+
+#formContainer {
+  height: 300%;
+  align-items: baseline;
+}
