@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { connect } from "react-redux";
+
+import { Link, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+
 import "./UserVerification.css";
 
 function UserVerification(props) {
-  const { register, handleSubmit, errors } = useForm();
 
   useEffect(() => {
     if (props.sendToTodolist) {
@@ -12,77 +13,74 @@ function UserVerification(props) {
     }
   }, [props.sendToTodolist]);
 
-  const onSubmit = (data) => {
-    props.verify(data);
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '' 
+});
+
+const { email, password } = formData;
+
+const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
+
+const onSubmit = e => {
+    e.preventDefault();
+
+    // login(email, password);
+    props.verify(email,password);
+    
     // for redirect the page to todolist
 
     props.history.push("/TodoList");
-
-    console.log(data);
-  };
-
+};
+  
+  
+  
   return (
-    <>
-      <div
-        className="text-white rgba-stylish-strong py-3 px-3 z-depth-4"
-        id="formContainer"
-      >
-        <form
-          id="formV"
-          className="form-signin"
-          onSubmit={handleSubmit(onSubmit)}
-        >
-          <label for="exampleInputEmail1">
-            <strong>React-Redux TodoList </strong>
-          </label>
-          <img
-            src="https://source.unsplash.com/200x200/?code,snow"
-            className="rounded mx-auto d-block"
-            alt="..."
-            width="72"
-            height="72"
-          />
-          <h1 className="h3 mb-3 font-weight-normal">TodoList </h1>
-          <label for="inputEmail" className="sr-only">
-            Email address
-          </label>
+  <div className='container mt-5'>
+  <h1>Sign In</h1>
+  <p>Sign into your Account</p>
+  <form onSubmit={e => onSubmit(e)}>
+      <div className='form-group'>
           <input
-            name="email"
-            type="email"
-            className="form-control"
-            placeholder="Enter email"
-            ref={register({
-              required: { value: true, message: "Email is Needed" },
-              pattern: {
-                value: /^[\w.]+@([\w-]+\.)+[\w-]+$/,
-                message: "Email Format Wrong"
-              }
-            })}
+              className='form-control'
+              type='email'
+              placeholder='Email'
+              name='email'
+              value={email}
+              
+              onChange={e => onChange(e)}
+              required
           />
-
-          {errors.email && <span>{errors.email.message}</span>}
-
-          <label for="exampleInputPassword1">Password</label>
-          <input
-            name="password"
-            type="password"
-            className="form-control"
-            placeholder="Password"
-            ref={register({
-              required: { value: true, message: "Password is required" }
-            })}
-          />
-          {errors.password && <span>{errors.password.message}</span>}
-          <input
-            className="btn btn-lg btn-primary btn-block"
-            type="submit"
-            value="Sign In"
-          />
-          <p className="mt-5 mb-3 text-muted">© 2017-2018</p>
-        </form>
       </div>
-    </>
-  );
+      <div className='form-group'>
+          <input
+              className='form-control'
+              type='password'
+              placeholder='Password'
+              name='password'
+              value={password}
+              onChange={e => onChange(e)}
+              minLength='6'
+              required
+          />
+      </div>
+      <button className='btn btn-primary' type='submit'>Login</button>
+  </form>
+  <button className='btn btn-danger mt-3' >
+      Continue With Google
+  </button>
+  <br />
+  <button className='btn btn-primary mt-3' >
+      Continue With Facebook
+  </button>
+  <p className='mt-3'>
+      Don't have an account? <Link to='/signup'>Sign Up</Link>
+  </p>
+  <p className='mt-3'>
+      Forgot your Password? <Link to='/reset-password'>Reset Password</Link>
+  </p>
+</div>
+);
 }
 
 const mapStateToProps = (state) => {
@@ -99,3 +97,9 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserVerification);
+
+
+
+
+
+

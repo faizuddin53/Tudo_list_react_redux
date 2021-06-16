@@ -6,7 +6,7 @@ import Header from './Componants/Header'
 import UserVerification from './Componants/UserVerification'
 import Logout from './Componants/Logout'
 import SearchTask from './Componants/SearchTask'
-import { connect } from "react-redux";
+import { connect } from 'react-redux'
 import ErrorBoundary from './Componants/ErrorBoundary'
 
 function App(props) {
